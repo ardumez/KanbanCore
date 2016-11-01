@@ -10,5 +10,10 @@ namespace Tests
         {
             Assert.True(true);
         }
+
+        public void Test2()
+        {
+            
+        }
     }
 }
