@@ -33,7 +33,7 @@ namespace KBCList
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AppIdentityDbContext>(options =>                              
-                options.UseSqlServer(Configuration["Data:KBCList:ConnectionString"]));
+                options.UseSqlServer(Configuration["ConnectionStrings:KBCList"]));
 
             services.AddIdentity<User, IdentityRole>()         
                 .AddEntityFrameworkStores<AppIdentityDbContext>();
