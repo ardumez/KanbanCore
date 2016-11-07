@@ -7,6 +7,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;                        
+using Microsoft.EntityFrameworkCore.Infrastructure;                  
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using KBCList.Models;
+
 
 namespace KBCList
 {
@@ -27,6 +32,12 @@ namespace KBCList
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<AppIdentityDbContext>(options =>                              
+                options.UseSqlServer(Configuration["Data:KBCList:ConnectionString"]));
+
+            services.AddIdentity<User, IdentityRole>()         
+                .AddEntityFrameworkStores<AppIdentityDbContext>();
+
             // Add framework services.
             services.AddMvc();
         }
@@ -48,6 +59,8 @@ namespace KBCList
             }
 
             app.UseStaticFiles();
+
+            app.UseIdentity();
 
             app.UseMvc(routes =>
             {
