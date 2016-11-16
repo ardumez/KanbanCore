@@ -1,6 +1,6 @@
 {
   "projects": [
-    "KBCList",
+    "src/KbcList",
     "test"
   ]
 }
