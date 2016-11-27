@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
-using KBCList.Models;
+using KbcList.Models;
 
-namespace KBCList.Controllers
+namespace KbcList.Controllers
 {
   [Route("api/[controller]")]
   public class KbcMenuController : Controller

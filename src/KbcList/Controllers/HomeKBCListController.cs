@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-
-namespace KBCList.Controllers
+using Microsoft.AspNetCore.Authorization;
+namespace KbcList.Controllers
 {
-    public class HomeKBCListController : Controller
+    [Authorize]
+    public class HomeKbcListController : Controller
     {
         public IActionResult Index()
         {

@@ -4,12 +4,13 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - KBCList</title>
+    <title>@ViewData["Title"] - KbcList</title>
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
         <link rel="stylesheet" href="~/css/kbc-menu.css" />
         <link rel="stylesheet" href="~/css/kbc-index.css" />
+        <link rel="stylesheet" href="~/css/kbc-header.css" />
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css" asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
@@ -18,12 +19,15 @@
     </environment>
 </head>
 
-<body ng-app="KBCList" ng-controller="HeaderCtrl as header">
-    <div class="navbar navbar-inverse navbar-fixed-top">
+<body ng-app="KbcList" ng-controller="HeaderCtrl as header">
+    <div class="bg-primary navbar navbar-fixed-top kbc-header ">
         <div class="container-fluid">
-            <div class="navbar-header">
-                <a href="#" class="navbar-brand">Kbc List</a>
-                <button ng-click="header.KBCListButtonClick()" type="submit" class="btn btn-default" style="margin:7px"><span class="glyphicon glyphicon-equalizer" aria-hidden="true"></span> Tableaux</button>
+            <div class="navbar-header kbc-header-left">
+                <a href="#" class="navbar-brand kbc-header-brand">Kbc List</a>
+                <button ng-click="header.KbcListButtonClick()" type="submit" class="btn btn-info btn-sm kbc-header-button"><span class="glyphicon glyphicon-equalizer" aria-hidden="true"></span> Tableaux</button>
+            </div>
+            <div class="navbar-header navbar-right kbc-header-right">
+                <a asp-controller="Admin" asp-action="Index" class="btn btn-info btn-sm kbc-header-button">Administration</a>
             </div>
         </div>
     </div>
@@ -32,7 +36,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; 2016 - KBCList</p>
+            <p>&copy; 2016 - KbcList</p>
         </footer>
     </div>
     @Html.Partial("KBCMenu")

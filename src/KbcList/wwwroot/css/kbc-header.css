@@ -1,0 +1,27 @@
+.kbc-header
+{
+  min-height: 37px;
+}
+.kbc-header .kbc-header-left
+{
+  float: left;
+}
+.kbc-header .kbc-header-right
+{
+  float: right;
+}
+.kbc-header .kbc-header-brand
+{
+  height: 37px;
+  color: white;
+  font-weight: bold;
+  padding-top: 9px;
+}
+.kbc-header .kbc-header-button
+{
+  font-weight: bold;
+  font-size: 14px;
+  padding-bottom: 3px;
+  padding-top: 3px;
+  margin: 4px;
+}

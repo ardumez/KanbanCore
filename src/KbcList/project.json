@@ -73,6 +73,6 @@
     ]
   },
   "tooling": {
-    "defaultNamespace": "KBCList"
+    "defaultNamespace": "KbcList"
   }
 }

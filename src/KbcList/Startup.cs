@@ -10,10 +10,10 @@ using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;                        
 using Microsoft.EntityFrameworkCore.Infrastructure;                  
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using KBCList.Models;
+using KbcList.Models;
+using KbcList.Models.Admin;
 
-
-namespace KBCList
+namespace KbcList
 {
     public class Startup
     {
@@ -34,13 +34,16 @@ namespace KBCList
         {
           
             services.AddDbContext<AppIdentityDbContext>(options =>                              
-                options.UseSqlServer(Configuration["ConnectionStrings:KBCList"]));
+                options.UseSqlServer(Configuration["ConnectionStrings:KbcList"]));
 
-            services.AddIdentity<User, IdentityRole>()         
-                .AddEntityFrameworkStores<AppIdentityDbContext>();
+            services.AddIdentity<User, IdentityRole>(opt => 
+                opt.Cookies.ApplicationCookie.LoginPath = "/"
+                ).AddEntityFrameworkStores<AppIdentityDbContext>();
 
             // Add framework services.
             services.AddMvc();
+
+            services.AddTransient<IKbcUserManager, KbcUserManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,8 +52,10 @@ namespace KBCList
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+                Console.WriteLine("En developement");
             if (env.IsDevelopment())
             {
+                Console.WriteLine("En developement");
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
             }
@@ -69,8 +74,6 @@ namespace KBCList
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-
-            context.Database.Migrate();
         }
     }
 }

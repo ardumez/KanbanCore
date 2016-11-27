@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('KBCList')
+    .module('KbcList')
     .controller('HeaderCtrl', HeaderCtrl);
 
   HeaderCtrl.$inject = ['$scope', 'kbcMenuService'];
@@ -10,22 +10,22 @@
   function HeaderCtrl($scope, kbcMenuService) {
     var vm = this;
 
-    vm.showKBCList = true;
-    vm.KBCListButtonClick = KBCListButtonClick;
+    vm.showKbcList = true;
+    vm.KbcListButtonClick = KbcListButtonClick;
     vm.initMenu = initMenu;
 
     return vm;
 
-    function KBCListButtonClick() {
-      if (vm.showKBCList) {
-        vm.showKBCList = false;
+    function KbcListButtonClick() {
+      if (vm.showKbcList) {
+        vm.showKbcList = false;
       } else {
-        vm.showKBCList = true;
+        vm.showKbcList = true;
       }
     }
     function initMenu(){
       kbcMenuService.getKBCMenu().success(function (data) {
-        vm.KBCList = data;
+        vm.KbcList = data;
       });
     }
   };

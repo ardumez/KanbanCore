@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('KBCList')
+    .module('KbcList')
     .controller('IndexCtrl', IndexCtrl);
 
   IndexCtrl.$inject = ['$scope', 'kbcMenuService'];

@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('KBCList')
+    .module('KbcList')
     .factory('kbcMenuService', kbcMenuService);
 
   kbcMenuService.$inject = ['$http'];

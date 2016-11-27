@@ -1,3 +1,3 @@
 // Write your Javascript code.
 angular
-  .module('KBCList', []);
+  .module('KbcList', []);
