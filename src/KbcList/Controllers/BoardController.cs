@@ -4,13 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+
 namespace KbcList.Controllers
 {
- 
-    public class HomeKbcListController : Controller
+    public class BoardController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Index(int boardID)
         {
+            if (IsSecure<UserBoard>())
             return View();
         }
 
