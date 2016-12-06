@@ -1,0 +1,4 @@
+namespace KbcList.Models.Board
+{
+    
+}
