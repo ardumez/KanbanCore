@@ -12,6 +12,7 @@ namespace KbcList.Controllers
     {
         public IActionResult Index()
         {
+            ViewData["Title"] = "Kbc List";
             return View();
         }
 
