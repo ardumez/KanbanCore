@@ -1,17 +1,22 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using KbcList.Models.Database;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+
 
 namespace KbcList.Controllers
 {
     public class BoardController : Controller
     {
-        public IActionResult Index(int boardID)
+        private IDataContext dataContext;
+
+        public BoardController(IDataContext dataContext)
         {
-            if (IsSecure<UserBoard>())
+            this.dataContext = dataContext;
+        }
+
+        public IActionResult Index(int userID)
+        {
+      
             return View();
         }
 
