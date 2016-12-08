@@ -10,18 +10,24 @@ namespace KbcList.Models.Database
         IQueryable<TEntity> Query<TEntity>() where TEntity : class;
     }
 
-    public class DataContext : DbContext
+    public class DataContext : DbContext, IDataContext
     {
-         public DbSet<Board> Boards { get; set; }
+        public DbSet<Board> Boards { get; set; }
 
-         public void AddEntity<TEntity>(TEntity entity) where TEntity : class
-         {
+
+        public DataContext(DbContextOptions<DataContext> options)  
+            : base(options)
+        {
+
+        }
+        public void AddEntity<TEntity>(TEntity entity) where TEntity : class
+        {
             base.Add<TEntity>(entity);
-         }
+        }
 
-         IQueryable<TEntity> Query<TEntity>() where TEntity : class
-         {
-             return base.Set<TEntity>();
-         }
+        public IQueryable<TEntity> Query<TEntity>() where TEntity : class
+        {
+            return base.Set<TEntity>();
+        }
     }
 }

@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using KbcList.Models.Admin;
 
-namespace KbcList.Models.Board
+namespace KbcList.Models.BoardModels
 {
-    public class BoardAuthorizeAttribute : AuthorizeAttribute
+    /*public class BoardAuthorizeAttribute : AuthorizeAttribute
     {
         private readonly IKbcUserManager kbcUserManager;
 
@@ -33,5 +33,5 @@ namespace KbcList.Models.Board
 
             return submission.UserID == user.UserID;
         }
-    }   
+    }   */
 }

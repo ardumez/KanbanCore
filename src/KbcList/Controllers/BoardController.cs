@@ -1,7 +1,8 @@
 using KbcList.Models.Database;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-
+using System.Linq;
+using KbcList.Models.BoardModels;
 
 namespace KbcList.Controllers
 {
@@ -14,9 +15,9 @@ namespace KbcList.Controllers
             this.dataContext = dataContext;
         }
 
-        public IActionResult Index(int userID)
+        public IActionResult Index(int boardID)
         {
-      
+            Board board = dataContext.Query<Board>().Single(b => b.BoardID == boardID);
             return View();
         }
 

@@ -11,6 +11,7 @@
         <link rel="stylesheet" href="~/css/kbc-menu.css" />
         <link rel="stylesheet" href="~/css/kbc-index.css" />
         <link rel="stylesheet" href="~/css/kbc-header.css" />
+        <link rel="stylesheet" href="~/css/kbc-board.css" />
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css" asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
@@ -32,7 +33,7 @@
         </div>
     </div>
 
-    <div class="container body-content">
+    <div class="@(ViewData["container-type"] ?? "container") body-content">
         @RenderBody()
         <hr />
         <footer>
