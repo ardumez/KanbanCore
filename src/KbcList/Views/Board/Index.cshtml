@@ -2,60 +2,47 @@
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script>
 function allowDrop(ev) {
-    return true;
+    
+        $(ev.target).closest(".kbc-board-list").css("background-color", "red");
+       ev.preventDefault();
 }
 var mouseX, mouseY;
 var tempX = 0;
 var tempY = 0;
 var id = null;
-jQuery(document).ready(function () {
+$(document).ready(function () {
     $(document).mousemove(function (e) {
         var bodyOffsets = document.body.getBoundingClientRect();
         tempX = e.pageX - bodyOffsets.left;
         tempY = e.pageY;
-  
-    //var height = $(document.getElementById(data)).height();
-    //$(document.getElementById(data)).css("position","fixed");
     });
+
 }) 
-function replaceIcon(ev)
-{
-    if(id)
-    {
+function replaceIcon(ev){
+    if(id) {
         $(document.getElementById(id)).css("position","fixed");
         $(document.getElementById(id)).css("top", ev.pageY  + "px");
         $(document.getElementById(id)).css("left",ev.pageX + "px");
     }
 }
-
-function drag(ev) {
-   
+function drag(ev) {   
     ev.dataTransfer.setData("text", ev.target.id);
-  //  console.log("drag");
-
     var data = ev.dataTransfer.getData("text");
     id = data;
     var height = $(document.getElementById(data)).height();
     $(ev.target).css("position","fixed");
- 
-
     $(ev.target).before("<div id='kbcCurrent' class='panel panel-default kbc-board-list' style='height:" + height + "px;background-color: silver;'>coucou</div>");
     var img = new Image(); 
     img.src = ''; 
     ev.dataTransfer.setDragImage(img, 10, 10);   
 }
-function leave(ev)
-{
-    if (hasCurrent)
-    {
-        $("#kbcCurrent").remove();
-        hasCurrent = false;
-        var data = ev.dataTransfer.getData("text");
-        $(document.getElementById(data)).css("display","block");
-    }
+function leave(ev) {
+    $("#kbcCurrent").remove();
+    hasCurrent = false;
+    var data = ev.dataTransfer.getData("text");
+    $(document.getElementById(data)).css("position","static");
 }
-function drop(ev) {
-     id = null;
+function drop(ev) { 
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
     $(document.getElementById(data)).css("display","block");
@@ -65,30 +52,18 @@ function drop(ev) {
     hasCurrent = false;
     ev.target.id = null;
     id = null;
-
 }
 var hasCurrent = false;
+
 function replace(ev) {
-   
+    var data = ev.dataTransfer.getData("text");  
+    if ($(ev.target).closest(".kbc-board-list").attr("id") != $(document.getElementById(data)).attr("id")) {
+        $("#kbcCurrent").remove();
         var data = ev.dataTransfer.getData("text");
-        
-    
- //   $(document.getElementById(data)).css("top", tempY + "px");
- //   $(document.getElementById(data)).css("left",tempX + "px");
-           
-     //   console.log($(ev.target).closest(".kbc-board-list").attr("id"));
-      //  console.log(document.getElementById(data));
-        
-        if ($(ev.target).closest(".kbc-board-list").attr("id") != $(document.getElementById(data)).attr("id"))
-        {
-         $("#kbcCurrent").remove();
-            var data = ev.dataTransfer.getData("text");
-            var height = $(document.getElementById(data)).height();
-        
-            $(ev.target).closest(".kbc-board-list").before("<div id='kbcCurrent' class='panel panel-default kbc-board-list' style='height:" + height + "px;background-color: silver;'>coucou</div>");
-             hasCurrent = true;
-        } 
-    
+        var height = $(document.getElementById(data)).height();
+        $(ev.target).closest(".kbc-board-list").before("<div id='kbcCurrent' class='panel panel-default kbc-board-list' style='height:" + height + "px;background-color: silver;'>coucou</div>");
+        hasCurrent = true;
+    } 
 }
 </script>
 <script type="text/ng-template" id="temp1.html">
@@ -122,13 +97,13 @@ function replace(ev) {
                     </div>
                 </div>
             </div>
-            <div id="panel2" class="panel panel-default kbc-board-list" style="height:400px" draggable="false" ondragstart="drag(event)"
+            <div id="" class="panel panel-default kbc-board-list" style="height:400px" draggable="false" ondragstart="drag(event)"
                 ondragover="replace(event)" ondragend="leave(event)">
 
             </div>
         </div>
         <div class="kbclist" style="width: 350px; height: 500px;border: 1px solid black;float:left" ondrop="drop(event)" ondragover="allowDrop(event)">
-            <div id="panel2" class="panel panel-default kbc-board-list" draggable="false" ondragstart="drag(event)" ondragover="replace(event)"
+            <div id="panel5" class="panel panel-default kbc-board-list" draggable="false" ondragstart="drag(event)" ondragover="replace(event)"
                 ondragend="leave(event)">
                 <div class="panel-heading">Panel heading without title</div>
                 <div class="panel-body">
@@ -140,7 +115,7 @@ function replace(ev) {
                     </div>
                 </div>
             </div>
-            <div id="panel2" class="panel panel-default kbc-board-list" style="height:400px" draggable="false" ondragstart="drag(event)"
+            <div id="" class="panel panel-default kbc-board-list" style="height:400px" draggable="false" ondragstart="drag(event)"
                 ondragover="replace(event)" ondragend="leave(event)">
 
             </div>
