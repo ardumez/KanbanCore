@@ -38,7 +38,7 @@ namespace KbcList.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginModel model)
         {
-        
+
             if (ModelState.IsValid)
             {
 
@@ -47,6 +47,7 @@ namespace KbcList.Controllers
                 {
           
                     return RedirectToAction("Index", "BoardList");
+
                 }
                 else
                 {
@@ -59,7 +60,7 @@ namespace KbcList.Controllers
             return View(model);
         }
 
-          public IActionResult Create() 
+        public IActionResult Create()
         {
             ViewData["Title"] = "Créer un compte Kbc List";
             return View();

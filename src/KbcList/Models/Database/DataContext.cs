@@ -5,6 +5,6 @@ namespace KbcList.Models.Database
 {
     public class DataContext : DbContext
     {
-      
+
     }
 }

@@ -49,5 +49,6 @@ namespace KbcList.Models.Users
         {
             return signInManager.PasswordSignInAsync(username, password, false, false);
         }
+
     }
 }
