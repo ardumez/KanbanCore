@@ -54,24 +54,29 @@ function leave(ev) {
     $(document.getElementById(data)).css("position","static");
 }
 function drop(ev) { 
+    currentReplace = -1;
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
     $(document.getElementById(data)).css("position","static");
     $("#kbcCurrent").replaceWith(document.getElementById(data));
 }
+var currentReplace = -1;
 function replace(ev) {
-  if (ev.stopPropagation) {      ev.stopPropagation();   } else {      ev.cancelBubble = true;   }
+    var position = $(ev.target).closest(".kbc-board-list").prevAll().size();
     var data = ev.dataTransfer.getData("text"); 
     // console.log("id :" + ev.target.id);
     // console.log("id calc :" + $(ev.target).closest(".kbc-board-list").attr("id"));
-    if ($(ev.target).closest(".kbc-board-list").attr("id") != "kbcCurrent")
-    {
-        if ($(ev.target).closest(".kbc-board-list").attr("id") != $(document.getElementById(data)).attr("id")) {
-            ev.stopPropagation();
+    
+    if ($(ev.target).closest(".kbc-board-list").attr("id") != $(document.getElementById(data)).attr("id")) {
+        if (currentReplace != position)
+        {
+            currentReplace = position;
+            console.log("replace : " + currentReplace);
             console.log("replace : " + ev.target.className);
             $("#kbcCurrent").remove(); 
             var height = $(document.getElementById(data)).height();
             $(ev.target).closest(".kbc-board-list").before(targetElement(height));
+
         }
     }
 }
@@ -79,6 +84,7 @@ function replace(ev) {
 <script type="text/ng-template" id="temp1.html">
    ... some template stuff
 </script>
+<!--
 <div ng-controller="BoardCtrl as board">
     <div ng-repeat="boardList in board.boardLists" board-list>
         <h1>{{ boardList.title }}</h1>
@@ -92,7 +98,7 @@ function replace(ev) {
 <br/>
 <br/>
 <br/>
-<br/>
+<br/> -->
 <div ng-controller="IndexCtrl as index" ng-init="index.init()" class="kbc-board" ondragover="replaceIcon(event)">
     <h4><span class="glyphicon glyphicon-th" aria-hidden="true"></span> Tableaux personnels</h4>
     <div class="container-fluid">
