@@ -1,0 +1,28 @@
+@{ ViewData["Title"] = "Coucou"; ViewData["container-type"] = "container-fluid"; }
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<style>
+.kbc-column
+{
+    width: 400px;
+    height: 600px;
+    float: left;
+    background-color: silver;
+}
+.kbc-item
+{
+    height: 200px;
+    width: 400px;
+    float: left;
+    background-color: blueviolet;
+    border: 1px solid black;
+}
+</style>
+<div ng-controller="IndexCtrl as index" ng-init="index.init()" class="kbc-board"  ondragover="replaceIcon(event)">
+    <h4><span class="glyphicon glyphicon-th" aria-hidden="true"></span> Tableaux personnels</h4>
+    <div class="container-fluid">
+        <div class="kbc-column">
+            <div class="kbc-item">
+            </div>
+        </div>
+    </div>
+</div>

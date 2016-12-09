@@ -1,11 +1,7 @@
 @{ ViewData["Title"] = "Coucou"; ViewData["container-type"] = "container-fluid"; }
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script>
-function allowDrop(ev) {
-    
-        $(ev.target).closest(".kbc-board-list").css("background-color", "red");
-       ev.preventDefault();
-}
+
 var mouseX, mouseY;
 var tempX = 0;
 var tempY = 0;
@@ -18,7 +14,26 @@ $(document).ready(function () {
     });
 
 }) 
+function targetElement(height, classValue)
+{
+    return "<div id='kbcCurrent' class=' panel panel-default kbc-board-list " + classValue + "' style='height:" + height + "px;background-color: silver;'>coucou bottom</div>";
+}
+function allowDrop(ev) {
+    ev.preventDefault();
+    if ($(ev.target).closest(".kbclist-content").size() == 0) {
+        var data = ev.dataTransfer.getData("text");
+
+        var height = $(document.getElementById(data)).height();
+        if ($(ev.target).closest(".kbclist").children(".kbclist-content").children(".kbc-board-list-bottom").size() == 0)
+        {
+            $("#kbcCurrent").remove();
+            $(ev.target).closest(".kbclist").children(".kbclist-content").append(targetElement(height, "kbc-board-list-bottom"));
+        }
+    }
+}
 function replaceIcon(ev){
+    var id = ev.dataTransfer.getData("text");
+     
     if(id) {
         $(document.getElementById(id)).css("position","fixed");
         $(document.getElementById(id)).css("top", ev.pageY  + "px");
@@ -28,97 +43,107 @@ function replaceIcon(ev){
 function drag(ev) {   
     ev.dataTransfer.setData("text", ev.target.id);
     var data = ev.dataTransfer.getData("text");
-    id = data;
     var height = $(document.getElementById(data)).height();
     $(ev.target).css("position","fixed");
-    $(ev.target).before("<div id='kbcCurrent' class='panel panel-default kbc-board-list' style='height:" + height + "px;background-color: silver;'>coucou</div>");
-    var img = new Image(); 
-    img.src = ''; 
-    ev.dataTransfer.setDragImage(img, 10, 10);   
+    $(ev.target).before(targetElement(height));
+    ev.dataTransfer.setDragImage(new Image(), 10, 10);   
 }
 function leave(ev) {
     $("#kbcCurrent").remove();
-    hasCurrent = false;
     var data = ev.dataTransfer.getData("text");
     $(document.getElementById(data)).css("position","static");
 }
 function drop(ev) { 
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
-    $(document.getElementById(data)).css("display","block");
     $(document.getElementById(data)).css("position","static");
-    $(ev.target).closest(".kbc-board-list").before(document.getElementById(data));
-    $("#kbcCurrent").remove();
-    hasCurrent = false;
-    ev.target.id = null;
-    id = null;
+    $("#kbcCurrent").replaceWith(document.getElementById(data));
 }
-var hasCurrent = false;
-
 function replace(ev) {
     var data = ev.dataTransfer.getData("text");  
     if ($(ev.target).closest(".kbc-board-list").attr("id") != $(document.getElementById(data)).attr("id")) {
+        console.log("replace");
         $("#kbcCurrent").remove();
-        var data = ev.dataTransfer.getData("text");
         var height = $(document.getElementById(data)).height();
-        $(ev.target).closest(".kbc-board-list").before("<div id='kbcCurrent' class='panel panel-default kbc-board-list' style='height:" + height + "px;background-color: silver;'>coucou</div>");
-        hasCurrent = true;
+        $(ev.target).closest(".kbc-board-list").before(targetElement(height));
     } 
 }
 </script>
 <script type="text/ng-template" id="temp1.html">
    ... some template stuff
 </script>
+<div ng-controller="BoardCtrl as board">
+</div>
+<br/>
+<br/>
+<br/>
+<br/>
 <div ng-controller="IndexCtrl as index" ng-init="index.init()" class="kbc-board"  ondragover="replaceIcon(event)">
     <h4><span class="glyphicon glyphicon-th" aria-hidden="true"></span> Tableaux personnels</h4>
     <div class="container-fluid">
-        <div style="width: 350px; height: 500px;border: 1px solid black;float:left" ondrop="drop(event)" ondragover="allowDrop(event)">
-            <div id="panel1" class="panel panel-default kbc-board-list" draggable="true" ondragstart="drag(event)" ondragover="replace(event)"
-                ondragend="leave(event)">
-                <div class="panel-heading">Panel heading without title</div>
-                <div class="panel-body">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Panel heading without title</div>
-                        <div class="panel-body">
-                            COucou 1
+        <div class="kbclist" style="width: 350px; height: 500px;border: 1px solid black;float:left" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <div class="kbclist-content" style="float:left;background-color:silver">
+                <div id="panel1" class="panel panel-default kbc-board-list" draggable="true" ondragstart="drag(event)" ondragover="replace(event)"
+                    ondragend="leave(event)">
+                    <div class="panel-heading">Panel heading without title</div>
+                    <div class="panel-body">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Panel heading without title</div>
+                            <div class="panel-body">
+                                COucou 1
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="panel3" class="panel panel-default kbc-board-list" draggable="true" ondragstart="drag(event)" ondragover="replace(event)"
+                    ondragend="leave(event)">
+                    <div class="panel-heading">Panel heading without title</div>
+                    <div class="panel-body">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Panel heading without title</div>
+                            <div class="panel-body">
+                                COucou 2
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="panel6" class="panel panel-default kbc-board-list" draggable="true" ondragstart="drag(event)" ondragover="replace(event)"
+                    ondragend="leave(event)">
+                    <div class="panel-heading">Panel heading without title</div>
+                    <div class="panel-body">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Panel heading without title</div>
+                            <div class="panel-body">
+                                COucou 3
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div id="panel3" class="panel panel-default kbc-board-list" draggable="true" ondragstart="drag(event)" ondragover="replace(event)"
-                ondragend="leave(event)">
-                <div class="panel-heading">Panel heading without title</div>
-                <div class="panel-body">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Panel heading without title</div>
-                        <div class="panel-body">
-                            COucou 2
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="" class="panel panel-default kbc-board-list" style="height:400px" draggable="false" ondragstart="drag(event)"
+          <!--  <div id="" class="panel panel-default kbc-board-list" style="height:400px" draggable="false" ondragstart="drag(event)"
                 ondragover="replace(event)" ondragend="leave(event)">
 
-            </div>
+            </div> -->
         </div>
         <div class="kbclist" style="width: 350px; height: 500px;border: 1px solid black;float:left" ondrop="drop(event)" ondragover="allowDrop(event)">
-            <div id="panel5" class="panel panel-default kbc-board-list" draggable="false" ondragstart="drag(event)" ondragover="replace(event)"
-                ondragend="leave(event)">
-                <div class="panel-heading">Panel heading without title</div>
-                <div class="panel-body">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Panel heading without title</div>
-                        <div class="panel-body">
-                            Panel content
+            <div class="kbclist-content" style="float:left" >
+                <div id="panel5" class="panel panel-default kbc-board-list" draggable="false" ondragstart="drag(event)" ondragover="replace(event)"
+                    ondragend="leave(event)">
+                    <div class="panel-heading">Panel heading without title</div>
+                    <div class="panel-body">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Panel heading without title</div>
+                            <div class="panel-body">
+                                Panel content
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div id="" class="panel panel-default kbc-board-list" style="height:400px" draggable="false" ondragstart="drag(event)"
+        <!--    <div id="" class="panel panel-default kbc-board-list" style="height:400px" draggable="false" ondragstart="drag(event)"
                 ondragover="replace(event)" ondragend="leave(event)">
 
-            </div>
+            </div> -->
         </div>
     </div>
 </div>

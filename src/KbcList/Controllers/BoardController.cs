@@ -21,6 +21,12 @@ namespace KbcList.Controllers
             return View();
         }
 
+        public IActionResult Index2(int boardID)
+        {
+            Board board = dataContext.Query<Board>().Single(b => b.BoardID == boardID);
+            return View();
+        }
+
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
