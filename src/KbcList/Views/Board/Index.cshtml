@@ -6,14 +6,7 @@ var mouseX, mouseY;
 var tempX = 0;
 var tempY = 0;
 var id = null;
-$(document).ready(function () {
-    $(document).mousemove(function (e) {
-        var bodyOffsets = document.body.getBoundingClientRect();
-        tempX = e.pageX - bodyOffsets.left;
-        tempY = e.pageY;
-    });
 
-}) 
 function targetElement(height, classValue)
 {
     return "<div id='kbcCurrent' class=' panel panel-default kbc-board-list " + classValue + "' style='height:" + height + "px;background-color: silver;'>coucou bottom</div>";
@@ -36,7 +29,7 @@ function replaceIcon(ev){
      
     if(id) {
         $(document.getElementById(id)).css("position","fixed");
-        $(document.getElementById(id)).css("top", ev.pageY  + "px");
+        $(document.getElementById(id)).css("top", ev.pageY - $(window).scrollTop() + "px");
         $(document.getElementById(id)).css("left",ev.pageX + "px");
     }
 }
@@ -61,35 +54,57 @@ function drop(ev) {
     $("#kbcCurrent").replaceWith(document.getElementById(data));
 }
 var currentReplace = -1;
+var neFaitRien = false;
 function replace(ev) {
-    var position = $(ev.target).closest(".kbc-board-list").prevAll().size();
-    var data = ev.dataTransfer.getData("text"); 
-    // console.log("id :" + ev.target.id);
-    // console.log("id calc :" + $(ev.target).closest(".kbc-board-list").attr("id"));
     
-    if ($(ev.target).closest(".kbc-board-list").attr("id") != $(document.getElementById(data)).attr("id")) {
-        if (currentReplace != position)
-        {
-            currentReplace = position;
-            console.log("replace : " + currentReplace);
-            console.log("replace : " + ev.target.className);
-            $("#kbcCurrent").remove(); 
-            var height = $(document.getElementById(data)).height();
-            $(ev.target).closest(".kbc-board-list").before(targetElement(height));
+    if (neFaitRien)
+        return;
+    neFaitRien = true;
+    setTimeout(function(){ neFaitRien = false }, 200);
 
+    var data = ev.dataTransfer.getData("text");         
+    var targetBoardItem = $(ev.target).closest(".kbc-board-list");
+    var height = $(document.getElementById(data)).height();
+
+    if ($(ev.target).closest(".kbclist-content").children("#kbcCurrent").size() > 0)
+    {
+        // When there are a placeholder in the list, you use this for replace the sibling target
+    
+        if ($(targetBoardItem).prevAll().size() > $("#kbcCurrent").prevAll().size())
+        {
+            $("#kbcCurrent").replaceWith(targetBoardItem);
+            $(targetBoardItem).after(targetElement(height));
         }
+        else
+        {
+            $("#kbcCurrent").replaceWith(targetBoardItem);
+            $(targetBoardItem).before(targetElement(height));
+        }
+    }
+    else
+    {
+        // When there are not placeholder in the target list
+
+        $("#kbcCurrent").remove();
+        var height = $(document.getElementById(data)).height();
+        $(ev.target).closest(".kbc-board-list").before(targetElement(height));
     }
 }
 </script>
 <script type="text/ng-template" id="temp1.html">
    ... some template stuff
 </script>
-<!--
+
 <div ng-controller="BoardCtrl as board">
-    <div ng-repeat="boardList in board.boardLists" board-list>
+    <div 
+        ng-repeat="boardList in board.boardLists" 
+        board-list>
         <h1>{{ boardList.title }}</h1>
         <div>
-            <div ng-repeat="boardItem in boardList.items" board-item>
+            <div 
+                ng-repeat="boardItem in boardList.items" 
+                board-item 
+                board-item-move="moveItem">
                 {{ boardItem.title }}
             </div>
         </div>
@@ -98,11 +113,11 @@ function replace(ev) {
 <br/>
 <br/>
 <br/>
-<br/> -->
+<br/> 
 <div ng-controller="IndexCtrl as index" ng-init="index.init()" class="kbc-board" ondragover="replaceIcon(event)">
     <h4><span class="glyphicon glyphicon-th" aria-hidden="true"></span> Tableaux personnels</h4>
     <div class="container-fluid">
-        <div class="kbclist" style="width: 350px; height: 500px;border: 1px solid black;float:left" ondrop="drop(event)" ondragover="allowDrop(event)">
+        <div class="kbclist" style="width: 350px; height: 800px;border: 1px solid black;float:left" ondrop="drop(event)" ondragover="allowDrop(event)">
             <div class="kbclist-content" style="float:left;background-color:silver">
                 <div id="panel1" class="panel panel-default kbc-board-list" draggable="true" ondragstart="drag(event)" ondragover="replace(event)"
                     ondragend="leave(event)">
@@ -146,7 +161,7 @@ function replace(ev) {
 
             </div> -->
         </div>
-        <div class="kbclist" style="width: 350px; height: 500px;border: 1px solid black;float:left" ondrop="drop(event)" ondragover="allowDrop(event)">
+        <div class="kbclist" style="width: 350px; height: 800px;border: 1px solid black;float:left" ondrop="drop(event)" ondragover="allowDrop(event)">
             <div class="kbclist-content" style="float:left">
                 <div id="panel5" class="panel panel-default kbc-board-list" draggable="false" ondragstart="drag(event)" ondragover="replace(event)"
                     ondragend="leave(event)">

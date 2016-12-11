@@ -11,6 +11,9 @@
 
     function BoardListDirective() {
         return function (scope, element, attrs) {
+            scope.moveItem = function(){
+                alert("coucou");
+            }
             if (scope.$last) { // all are rendered
                 element.bind("dragover", function(){
                     console.log("click");
@@ -20,10 +23,14 @@
     }
 
     function BoardItemDirective() {
-        return function (scope, element, attrs) {
-            if (scope.$last) { // all are rendered
-                element.bind("dragover", function(ev){
-                    console.log("click");
+        return {
+            restrict: "EAC",
+            scope: {
+                boardItemMove: '=boardItemMove'
+            },
+            link: function (scope, elem, attrs) {
+                elem.on('click', function(){
+                    scope.boardItemMove();
                 });
             }
         }
@@ -31,11 +38,11 @@
 
     function BoardCtrl($scope, kbcMenuService) {
         var vm = this;
-        vm.boardLists = [ {title : "A Faire", items : [
-                {title: "acheter baguette"},
-                {title: "acheter journal"}
+        vm.boardLists = [ { id : 1, title : "A Faire", items : [
+                { id: 2, title: "acheter baguette"},
+                { id: 3, title: "acheter journal"}
             ]
-        }, {title : "autre"}];
+        }, { id = 2, title : "autre"}];
         vm.init = init;
         return vm;
 
