@@ -16,11 +16,12 @@
         }
         return function (scope, elem, attrs) {
             elem.bind("dragover", function (ev) {
-                Array.filter($("#" + $rootScope.dragInfo.idElem), function (targetItem) {
-                    $(targetItem).css("position", "fixed");
-                    $(targetItem).css("top", setTop(ev.originalEvent.pageY));
-                    $(targetItem).css("left", (ev.originalEvent.pageX + 10) + "px");
-                });
+
+              
+                    $("#" + $rootScope.dragInfo.idElem).css("position", "fixed");
+                    $("#" + $rootScope.dragInfo.idElem).css("top", setTop(ev.originalEvent.pageY));
+                    $("#" + $rootScope.dragInfo.idElem).css("left", (ev.originalEvent.pageX + 10) + "px");
+                
             });
         }
     }
@@ -32,18 +33,18 @@
             link: function (scope, elem, attrs) {
                 elem.bind("drop", function (ev) {
                     ev.preventDefault();
+                //    elem.parent().find('current-item');
                     $(document.getElementById($rootScope.dragInfo.idElem)).css("position", "static");
                     $("#kbcCurrent").replaceWith(document.getElementById($rootScope.dragInfo.idElem));
                     //    scope.changePosition({position: $rootScope.dragInfo});
                 });
-                var neFaitRien = false;
+                var waitEvent = false;
                 elem.bind("dragover", function (ev) {
                     ev.preventDefault();
-                    setTimeout(function () { neFaitRien = false }, 200);
+                  //  setTimeout(function () { waitEvent = false }, 200);
                     if ($(ev.target).hasClass("kbclist")) {
-                        var data = angular.fromJson(ev.originalEvent.dataTransfer.getData("text")).idElem;
-
-                        var height = $(document.getElementById(data)).height();
+                       
+                        var height = $(document.getElementById($rootScope.dragInfo.idElem)).height();
                         if ($(ev.target).closest(".kbclist").children(".kbclist-content").children(".kbc-board-list-bottom").size() == 0) {
                             $("#kbcCurrent").remove();
                             $(ev.target).closest(".kbclist").children(".kbclist-content").append(targetElement(height, "kbc-board-list-bottom"));
@@ -76,17 +77,18 @@
                         positionPlaceholder: { x: 0, y: scope.boardIndex() }
                     }
                     $rootScope.dragInfo = dragInfo;
-                    ev.originalEvent.dataTransfer.setData("text", JSON.stringify(dragInfo));
-
-                    var data = angular.fromJson(ev.originalEvent.dataTransfer.getData("text"));
-                    var height = $(document.getElementById(data.idElem)).height();
+                  //  ev.originalEvent.dataTransfer.setData("text", JSON.stringify(dragInfo));
+/*
+                  //  var data = angular.fromJson(ev.dataTransfer.getData("text"));
+                    var height = $(document.getElementById(ev.target.id)).height();
 
                     $(ev.target).css("width", $(boardItemElem).width());
                     $(ev.target).css("position", "fixed");
                     $(ev.target).before(targetElement(height));
                     $(ev.target).parent().append(boardItemElem);
-
+*/
                     ev.originalEvent.dataTransfer.setDragImage(new Image(), 10, 10);
+                    //console.log("coucou");
                 });
                 elem.on('dragend', function (ev) {
                     $("#kbcCurrent").remove();
@@ -96,10 +98,10 @@
 
                 var neFaitRien = false;
                 elem.on('dragover', function (ev) {
-                    ev.preventDefault();
-                    setTimeout(function () { neFaitRien = false }, 200);
+                   // ev.preventDefault();
+                 //   setTimeout(function () { neFaitRien = false }, 200);
 
-                    var data = angular.fromJson(ev.originalEvent.dataTransfer.getData("text"));
+                    var data = $rootScope.dragInfo;
 
                     var height = $(document.getElementById(data.idElem)).height();
                     var kbcCurrent = elem.parent().find("#kbcCurrent");
