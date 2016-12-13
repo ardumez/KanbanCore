@@ -1,5 +1,21 @@
 @{ ViewData["Title"] = "Coucou"; ViewData["container-type"] = "container-fluid"; }
 <script src="~/lib/jquery/dist/jquery.js"></script>
+<style>
+    .kbclist {
+        width: 350px;
+        height: 800px;
+        border: 1px solid black;
+        float: left
+    }
+    
+    .kbclist-content {
+   
+    }
+    .current-selected
+    {
+        border: 1px solid black;
+    }
+</style>
 <script>
 
 var mouseX, mouseY;
@@ -73,6 +89,7 @@ function replace(ev) {
         if ($(targetBoardItem).prevAll().size() > $("#kbcCurrent").prevAll().size())
         {
             $("#kbcCurrent").replaceWith(targetBoardItem);
+
             $(targetBoardItem).after(targetElement(height));
         }
         else
@@ -95,17 +112,22 @@ function replace(ev) {
    ... some template stuff
 </script>
 
-<div ng-controller="BoardCtrl as board">
-    <div 
-        ng-repeat="boardList in board.boardLists" 
-        board-list>
-        <h1>{{ boardList.title }}</h1>
-        <div>
-            <div 
-                ng-repeat="boardItem in boardList.items" 
-                board-item 
-                board-item-move="moveItem">
-                {{ boardItem.title }}
+<div ng-controller="BoardCtrl as board" board>
+    <div board>
+        <div class="kbclist" ng-repeat="boardList in board.boardLists" board-list new-position-fn="board.changePosition(position)">
+            <h1>{{ boardList.title }}</h1>
+            <div class="kbclist-content">
+                <div id="panel{{$index}}" class="panel panel-default kbc-board-list" draggable="true" ng-repeat="boardItem in boardList.items" board-item board-item-move="moveItem" board-index="$index">          
+                    <div class="panel-heading">Panel heading without title</div>
+                    <div class="panel-body">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">INDEX {{$index }}</div>
+                            <div class="panel-body">
+                                {{ boardItem.title }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -113,12 +135,12 @@ function replace(ev) {
 <br/>
 <br/>
 <br/>
-<br/> 
+<br/>
 <div ng-controller="IndexCtrl as index" ng-init="index.init()" class="kbc-board" ondragover="replaceIcon(event)">
     <h4><span class="glyphicon glyphicon-th" aria-hidden="true"></span> Tableaux personnels</h4>
     <div class="container-fluid">
-        <div class="kbclist" style="width: 350px; height: 800px;border: 1px solid black;float:left" ondrop="drop(event)" ondragover="allowDrop(event)">
-            <div class="kbclist-content" style="float:left;background-color:silver">
+        <div class="kbclist" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <div class="kbclist-content">
                 <div id="panel1" class="panel panel-default kbc-board-list" draggable="true" ondragstart="drag(event)" ondragover="replace(event)"
                     ondragend="leave(event)">
                     <div class="panel-heading">Panel heading without title</div>
