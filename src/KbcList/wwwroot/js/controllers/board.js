@@ -68,7 +68,9 @@
             link: function (scope, elem, attrs) {
 
                 var boardItemElem = elem[0];
-
+                elem.on('mousemove', function(){
+                    console.log("mousemove");
+                });
                 elem.on('dragstart', function (ev) {
                     // elem.addClass('current-selected');
                     var dragInfo = {
