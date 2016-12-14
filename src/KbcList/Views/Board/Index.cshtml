@@ -7,17 +7,25 @@
         border: 1px solid black;
         float: left;
         cursor: pointer;
+      
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Chrome/Safari/Opera */
+     -khtml-user-select: none; /* Konqueror */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  not supported by any browser */
+
     }
     .panel{
-        border: 0px solid black;
-        background-color: bisque;
+ 
     }
     .kbclist-content {
    
     }
     .current-selected
     {
-        border: 1px solid black;
+      
     }
 </style>
 <script>
@@ -121,16 +129,11 @@ function replace(ev) {
         <div class="kbclist" ng-repeat="boardList in board.boardLists" board-list new-position-fn="board.changePosition(position)">
             <h1>{{ boardList.title }}</h1>
             <div class="kbclist-content">
-                <div id="panel{{$index}}" class="panel panel-default kbc-board-list" draggable="true" ng-repeat="boardItem in boardList.items" board-item board-item-move="moveItem" board-index="$index">          
+                <div id="panel{{$index}}" class="panel panel-default kbc-board-list" ng-repeat="boardItem in boardList.items" board-item board-item-move="moveItem" board-index="$index">          
                     <div class="panel-heading">Panel heading without title</div>
                     <div class="panel-body">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">INDEX {{$index }}</div>
-                            <div class="panel-body">
-                                {{ boardItem.title }}
-                            </div>
-                        </div>
-                    </div>
+                      {{ boardItem.title }}
+                      </div>
                 </div>
             </div>
         </div>

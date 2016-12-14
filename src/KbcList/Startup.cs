@@ -25,6 +25,8 @@ namespace KbcList
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
+
+            Console.WriteLine($"appsettings.{env.EnvironmentName}.json");
             Configuration = builder.Build();
         }
 

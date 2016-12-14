@@ -11,17 +11,18 @@
     BoardCtrl.$inject = ['$scope'];
 
     function BoardDirective($rootScope) {
-        function setTop(posY) {
-            return (posY + 10) - $(window).scrollTop() + "px";
-        }
         return function (scope, elem, attrs) {
-            elem.bind("dragover", function (ev) {
+            elem.bind("mousemove", function (ev) {
 
-              
-                    $("#" + $rootScope.dragInfo.idElem).css("position", "fixed");
-                    $("#" + $rootScope.dragInfo.idElem).css("top", setTop(ev.originalEvent.pageY));
-                    $("#" + $rootScope.dragInfo.idElem).css("left", (ev.originalEvent.pageX + 10) + "px");
-                
+                if (!$rootScope.dragInfo)
+                    return;
+
+                var boardItemElem = document.getElementById($rootScope.dragInfo.idElem);
+
+                $(boardItemElem).css({
+                    top :  (ev.originalEvent.pageY + 20) - $(window).scrollTop(),
+                    left : (ev.originalEvent.pageX + 20) 
+                });
             });
         }
     }
@@ -31,29 +32,43 @@
                 changePosition: '&newPositionFn'
             },
             link: function (scope, elem, attrs) {
-                elem.bind("drop", function (ev) {
-                    ev.preventDefault();
-                //    elem.parent().find('current-item');
-                    $(document.getElementById($rootScope.dragInfo.idElem)).css("position", "static");
-                    $("#kbcCurrent").replaceWith(document.getElementById($rootScope.dragInfo.idElem));
-                    //    scope.changePosition({position: $rootScope.dragInfo});
+                elem.bind("mouseup", function (ev) {
+                    if (!$rootScope.dragInfo)
+                        return;
+
+                    var boardItemElem = document.getElementById($rootScope.dragInfo.idElem);
+
+                    $(boardItemElem).css("position", "static");
+                    $("#kbcCurrent").replaceWith(boardItemElem);
+
+                    $rootScope.dragInfo = null;
                 });
                 var waitEvent = false;
-                elem.bind("dragover", function (ev) {
-                    ev.preventDefault();
-                  //  setTimeout(function () { waitEvent = false }, 200);
-                    if ($(ev.target).hasClass("kbclist")) {
-                       
-                        var height = $(document.getElementById($rootScope.dragInfo.idElem)).height();
-                        if ($(ev.target).closest(".kbclist").children(".kbclist-content").children(".kbc-board-list-bottom").size() == 0) {
-                            $("#kbcCurrent").remove();
-                            $(ev.target).closest(".kbclist").children(".kbclist-content").append(targetElement(height, "kbc-board-list-bottom"));
-                        }
-                    }
+                elem.bind("mousemove", function (ev) {
+                    // For not receve multiple same event
+                    //  waitHelper.wait("MOUSEMOVE_BOARDLIST", 300);
+
+                    if (waitEvent)
+                        return;
+                    waitEvent = true;
+                    setTimeout(function () { waitEvent = false }, 300);
+
+                    // When there are not drag and drop event
+                    if (!$rootScope.dragInfo)
+                        return;
+
+                    // When drag is on the placeholder
+                    if (ev.target.id == "kbcCurrent")
+                        return;
+
+                    // When there are already placeholder in the list
+                    if (elem.find(".kbc-board-list-bottom").length)
+                        return;
+
+                    $("#kbcCurrent").remove();
+                    $(this).children(".kbclist-content")
+                        .append(targetElement($rootScope.dragInfo.heightElem, "kbc-board-list-bottom"));
                 });
-                scope.moveItem = function () {
-                    alert("coucou");
-                }
             }
         }
     }
@@ -68,29 +83,22 @@
             link: function (scope, elem, attrs) {
 
                 var boardItemElem = elem[0];
-                elem.on('mousemove', function(){
-                    console.log("mousemove");
-                });
-                elem.on('dragstart', function (ev) {
-                    // elem.addClass('current-selected');
+
+                elem.on('mousedown', function (ev) {
+
+                    // For create drag info
                     var dragInfo = {
-                        idElem: ev.target.id,
+                        idElem: $(boardItemElem).attr("id"),
                         positionElem: { x: 0, y: scope.boardIndex() },
-                        positionPlaceholder: { x: 0, y: scope.boardIndex() }
+                        positionPlaceholder: { x: 0, y: scope.boardIndex() },
+                        heightElem: $(boardItemElem).outerHeight()
                     }
                     $rootScope.dragInfo = dragInfo;
-                  //  ev.originalEvent.dataTransfer.setData("text", JSON.stringify(dragInfo));
-/*
-                  //  var data = angular.fromJson(ev.dataTransfer.getData("text"));
-                    var height = $(document.getElementById(ev.target.id)).height();
-
-                    $(ev.target).css("width", $(boardItemElem).width());
-                    $(ev.target).css("position", "fixed");
-                    $(ev.target).before(targetElement(height));
-                    $(ev.target).parent().append(boardItemElem);
-*/
-                    ev.originalEvent.dataTransfer.setDragImage(new Image(), 10, 10);
-                    //console.log("coucou");
+                    $(boardItemElem).before(targetElement(dragInfo.heightElem));
+                    $(boardItemElem).parent().append(boardItemElem);
+                    $(boardItemElem).css("left", (ev.originalEvent.pageX + 20) + "px");
+                    $(boardItemElem).css("width", $(boardItemElem).width());
+                    $(boardItemElem).css("position", "fixed");
                 });
                 elem.on('dragend', function (ev) {
                     $("#kbcCurrent").remove();
@@ -99,28 +107,33 @@
                 });
 
                 var neFaitRien = false;
-                elem.on('dragover', function (ev) {
-                   // ev.preventDefault();
-                 //   setTimeout(function () { neFaitRien = false }, 200);
+                elem.on('mousemove', function (ev) {
 
-                    var data = $rootScope.dragInfo;
+                    event.stopPropagation();
 
-                    var height = $(document.getElementById(data.idElem)).height();
-                    var kbcCurrent = elem.parent().find("#kbcCurrent");
+                    if (neFaitRien)
+                        return;
+                    neFaitRien = true;
+                    setTimeout(function () { neFaitRien = false }, 300);
 
-                    $rootScope.dragInfo.positionPlaceholder.y = scope.boardIndex();
+                    if ($rootScope.dragInfo) {
 
-                    if (kbcCurrent.length && $(kbcCurrent).prev() && $(kbcCurrent).prev()[0] == boardItemElem) {
-                        $("#kbcCurrent").after(boardItemElem);
-                    }
-                    else if (kbcCurrent.length && $(kbcCurrent).next() && $(kbcCurrent).next()[0] == boardItemElem) {
-                        $("#kbcCurrent").before(boardItemElem);
-                    }
-                    else {
-                        $("#kbcCurrent").remove();
-                        var height = $(document.getElementById(data.idElem)).height();
-                        $(boardItemElem).before(targetElement(height));
-                        $("#kbcCurrent").attr("board-index", $(boardItemElem).attr("board-index"));
+                        var kbcCurrent = elem.parent().find("#kbcCurrent");
+
+                        $rootScope.dragInfo.positionPlaceholder.y = scope.boardIndex();
+
+                        if (kbcCurrent.length && $(kbcCurrent).prev()
+                            && $(kbcCurrent).prev()[0] == boardItemElem) {
+                            $("#kbcCurrent").after(boardItemElem);
+                        }
+                        else if (kbcCurrent.length && $(kbcCurrent).next()
+                            && $(kbcCurrent).next()[0] == boardItemElem) {
+                            $("#kbcCurrent").before(boardItemElem);
+                        }
+                        else {
+                            $("#kbcCurrent").remove();
+                            $(boardItemElem).before(targetElement($rootScope.dragInfo.heightElem));
+                        }
                     }
                 });
             }
@@ -136,7 +149,8 @@
                     { id: 2, title: "acheter journal" },
                     { id: 3, title: "acheter journal tt" }]
             },
-            { id: 2, title: "autre" }];
+            { id: 2, title: "autre" },
+            { id: 3, title: "autre" }];
         vm.init = init;
         vm.changePosition = changePosition;
         return vm;
