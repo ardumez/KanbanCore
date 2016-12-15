@@ -20,7 +20,7 @@
     </environment>
 </head>
 
-<body ng-app="KbcList" ng-controller="HeaderCtrl as header">
+<body ng-app="KbcList" ng-controller="HeaderCtrl as header" board>
     <div class="bg-primary navbar navbar-fixed-top kbc-header ">
         <div class="container-fluid">
             <div class="navbar-header kbc-header-left">
@@ -35,10 +35,7 @@
 
     <div class="@(ViewData["container-type"] ?? "container") body-content">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; 2016 - KbcList</p>
-        </footer>
+     
     </div>
     @Html.Partial("KBCMenu")
 

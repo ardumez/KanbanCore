@@ -18,12 +18,26 @@
                     return;
 
                 var boardItemElem = document.getElementById($rootScope.dragInfo.idElem);
-
+                console.log($rootScope.dragInfo.idElem);
+                //console.log(ev.originalEvent.pageX);
+              //  $(boardItemElem).remove();
                 $(boardItemElem).css({
-                    top :  (ev.originalEvent.pageY + 20) - $(window).scrollTop(),
-                    left : (ev.originalEvent.pageX + 20) 
+                    top :  (ev.originalEvent.pageY + 30) - $(window).scrollTop(),
+                    left : (ev.originalEvent.pageX + 30) 
                 });
             });
+             elem.bind("mouseup", function (ev) {
+                    if (!$rootScope.dragInfo)
+                        return;
+
+                    var boardItemElem = document.getElementById($rootScope.dragInfo.idElem);
+
+                    console.log($rootScope.dragInfo.idElem);
+                    $("#kbcCurrent").replaceWith(boardItemElem);
+                    $(boardItemElem).css("position", "static");
+                    $(boardItemElem).css("width", "auto");
+                    $rootScope.dragInfo = null;
+                });
         }
     }
     function BoardListDirective($rootScope) {
@@ -32,26 +46,16 @@
                 changePosition: '&newPositionFn'
             },
             link: function (scope, elem, attrs) {
-                elem.bind("mouseup", function (ev) {
-                    if (!$rootScope.dragInfo)
-                        return;
-
-                    var boardItemElem = document.getElementById($rootScope.dragInfo.idElem);
-
-                    $(boardItemElem).css("position", "static");
-                    $("#kbcCurrent").replaceWith(boardItemElem);
-
-                    $rootScope.dragInfo = null;
-                });
-                var waitEvent = false;
+               
+                $rootScope.waitEventList = false;
                 elem.bind("mousemove", function (ev) {
                     // For not receve multiple same event
                     //  waitHelper.wait("MOUSEMOVE_BOARDLIST", 300);
 
-                    if (waitEvent)
+                  /*  if ($rootScope.waitEventList)
                         return;
-                    waitEvent = true;
-                    setTimeout(function () { waitEvent = false }, 300);
+                    $rootScope.waitEventList = true;
+                    setTimeout(function () { $rootScope.waitEventList = false }, 20);*/
 
                     // When there are not drag and drop event
                     if (!$rootScope.dragInfo)
@@ -61,13 +65,18 @@
                     if (ev.target.id == "kbcCurrent")
                         return;
 
+                    if(!$(ev.target).hasClass('kbclist'))
+                        return;
+
                     // When there are already placeholder in the list
                     if (elem.find(".kbc-board-list-bottom").length)
                         return;
 
                     $("#kbcCurrent").remove();
-                    $(this).children(".kbclist-content")
+                    $(this).children(".kbc-list-card").children(".kbclist-content")
                         .append(targetElement($rootScope.dragInfo.heightElem, "kbc-board-list-bottom"));
+
+                    console.log("coucou");
                 });
             }
         }
@@ -94,11 +103,19 @@
                         heightElem: $(boardItemElem).outerHeight()
                     }
                     $rootScope.dragInfo = dragInfo;
+                    var width = $(boardItemElem).outerWidth()
                     $(boardItemElem).before(targetElement(dragInfo.heightElem));
-                    $(boardItemElem).parent().append(boardItemElem);
-                    $(boardItemElem).css("left", (ev.originalEvent.pageX + 20) + "px");
-                    $(boardItemElem).css("width", $(boardItemElem).width());
+                    $("body").append(boardItemElem);
+                    $("body").addClass("noselect");
+                    $(boardItemElem).css("width", width);
+
+                    $(boardItemElem).css({
+                        top :  (ev.originalEvent.pageY + 20) - $(window).scrollTop(),
+                        left : (ev.originalEvent.pageX + 20) 
+                    });
+
                     $(boardItemElem).css("position", "fixed");
+                    $(boardItemElem).css("z-index", "2030");
                 });
                 elem.on('dragend', function (ev) {
                     $("#kbcCurrent").remove();
@@ -109,30 +126,43 @@
                 var neFaitRien = false;
                 elem.on('mousemove', function (ev) {
 
-                    event.stopPropagation();
+                  
 
                     if (neFaitRien)
                         return;
                     neFaitRien = true;
-                    setTimeout(function () { neFaitRien = false }, 300);
-
+                    $rootScope.waitEventList = true;
+                    setTimeout(function () { neFaitRien = false, $rootScope.waitEventList = false }, 20);
+                  
+                  
                     if ($rootScope.dragInfo) {
 
-                        var kbcCurrent = elem.parent().find("#kbcCurrent");
+                        if($(elem).attr("id") == $rootScope.dragInfo.idElem)
+                            return;
+
+                        ev.stopPropagation();
+
+                 
+                        console.log("over");
+                        
+                        var kbcCurrent = $(elem).closest(".kbclist-content").find("#kbcCurrent");
 
                         $rootScope.dragInfo.positionPlaceholder.y = scope.boardIndex();
 
                         if (kbcCurrent.length && $(kbcCurrent).prev()
                             && $(kbcCurrent).prev()[0] == boardItemElem) {
                             $("#kbcCurrent").after(boardItemElem);
+                              console.log("prev");
                         }
                         else if (kbcCurrent.length && $(kbcCurrent).next()
                             && $(kbcCurrent).next()[0] == boardItemElem) {
                             $("#kbcCurrent").before(boardItemElem);
+                              console.log("next");
                         }
                         else {
                             $("#kbcCurrent").remove();
                             $(boardItemElem).before(targetElement($rootScope.dragInfo.heightElem));
+                             console.log("autre");
                         }
                     }
                 });
@@ -149,7 +179,11 @@
                     { id: 2, title: "acheter journal" },
                     { id: 3, title: "acheter journal tt" }]
             },
-            { id: 2, title: "autre" },
+            { id: 2, title: "autre", items: [
+                    { id: 4, title: "acheter zz" },
+                    { id: 5, title: "acheter cc" },
+                    { id: 6, title: "acheter ccc" }]
+            },
             { id: 3, title: "autre" }];
         vm.init = init;
         vm.changePosition = changePosition;
