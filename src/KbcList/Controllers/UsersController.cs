@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using KbcList.Models.Admin;
 using KbcList.Models;
+using KbcList.Models.Users;
 
 namespace KbcList.Controllers
 {
@@ -32,6 +33,32 @@ namespace KbcList.Controllers
             return View();
         }
 
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginModel model)
+        {
+        
+            if (ModelState.IsValid)
+            {
+
+                var result = await userManager.PasswordSignInAsync(model.Email, model.Password);
+                if (result.Succeeded)
+                {
+          
+                    return RedirectToAction("Index", "BoardList");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    return View(model);
+                }
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
           public IActionResult Create() 
         {
             ViewData["Title"] = "Créer un compte Kbc List";
@@ -51,7 +78,7 @@ namespace KbcList.Controllers
                 IdentityResult result = await userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Login");
                 }
                 else
                 {

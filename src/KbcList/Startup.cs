@@ -7,11 +7,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;                        
-using Microsoft.EntityFrameworkCore.Infrastructure;                  
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using KbcList.Models;
 using KbcList.Models.Admin;
+using KbcList.Models.Users;
 
 namespace KbcList
 {
@@ -32,11 +33,11 @@ namespace KbcList
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-          
-            services.AddDbContext<AppIdentityDbContext>(options =>                              
+
+            services.AddDbContext<AppIdentityDbContext>(options =>
                 options.UseSqlServer(Configuration["ConnectionStrings:KbcList"]));
 
-            services.AddIdentity<User, IdentityRole>(opt => 
+            services.AddIdentity<User, IdentityRole>(opt =>
                 opt.Cookies.ApplicationCookie.LoginPath = "/"
                 ).AddEntityFrameworkStores<AppIdentityDbContext>();
 
@@ -44,6 +45,16 @@ namespace KbcList
             services.AddMvc();
 
             services.AddTransient<IKbcUserManager, KbcUserManager>();
+
+            services.Configure<IdentityOptions>(options =>
+              {
+                    // Password settings
+                    options.Password.RequireDigit = false;
+                  options.Password.RequiredLength = 4;
+                  options.Password.RequireNonAlphanumeric = false;
+                  options.Password.RequireUppercase = false;
+                  options.Password.RequireLowercase = false;
+              });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,10 +63,8 @@ namespace KbcList
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-                Console.WriteLine("En developement");
             if (env.IsDevelopment())
             {
-                Console.WriteLine("En developement");
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
             }
