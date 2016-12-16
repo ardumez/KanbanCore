@@ -11,6 +11,7 @@
         <link rel="stylesheet" href="~/css/kbc-menu.css" />
         <link rel="stylesheet" href="~/css/kbc-index.css" />
         <link rel="stylesheet" href="~/css/kbc-header.css" />
+        <link rel="stylesheet" href="~/css/kbc-board.css" />
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css" asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
@@ -19,7 +20,7 @@
     </environment>
 </head>
 
-<body ng-app="KbcList" ng-controller="HeaderCtrl as header">
+<body ng-app="KbcList" ng-controller="HeaderCtrl as header" board>
     <div class="bg-primary navbar navbar-fixed-top kbc-header ">
         <div class="container-fluid">
             <div class="navbar-header kbc-header-left">
@@ -32,12 +33,9 @@
         </div>
     </div>
 
-    <div class="container body-content">
+    <div class="@(ViewData["container-type"] ?? "container") body-content">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; 2016 - KbcList</p>
-        </footer>
+     
     </div>
     @Html.Partial("KBCMenu")
 
@@ -49,6 +47,7 @@
         <script src="~/js/controllers/index.js" asp-append-version="true"></script>
         <script src="~/js/controllers/header.js" asp-append-version="true"></script>
         <script src="~/js/services/kbcMenuService.js" asp-append-version="true"></script>
+        <script src="~/js/controllers/board.js" asp-append-version="true"></script>
     </environment>
     <environment names="Staging,Production">
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js" asp-fallback-src="~/lib/jquery/dist/jquery.min.js"

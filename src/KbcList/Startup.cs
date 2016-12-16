@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using KbcList.Models;
 using KbcList.Models.Admin;
+using KbcList.Models.Database;
 
 namespace KbcList
 {
@@ -24,6 +25,8 @@ namespace KbcList
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
+
+            Console.WriteLine($"appsettings.{env.EnvironmentName}.json");
             Configuration = builder.Build();
         }
 
@@ -35,6 +38,10 @@ namespace KbcList
           
             services.AddDbContext<AppIdentityDbContext>(options =>                              
                 options.UseSqlServer(Configuration["ConnectionStrings:KbcList"]));
+            Console.WriteLine( Configuration["ConnectionStrings:KbcList"]);
+
+            services.AddDbContext<DataContext>(options =>                              
+                options.UseSqlServer(Configuration["ConnectionStrings:KbcList"]));
 
             services.AddIdentity<User, IdentityRole>(opt => 
                 opt.Cookies.ApplicationCookie.LoginPath = "/"
@@ -44,6 +51,7 @@ namespace KbcList
             services.AddMvc();
 
             services.AddTransient<IKbcUserManager, KbcUserManager>();
+            services.AddTransient<IDataContext, DataContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

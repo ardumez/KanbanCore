@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace KbcList.Controllers
 {
  
-    public class HomeKbcListController : Controller
+    public class KbcListController : Controller
     {
         public IActionResult Index()
         {

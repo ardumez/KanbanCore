@@ -1,0 +1,58 @@
+@{ ViewData["Title"] = "Coucou"; ViewData["container-type"] = "container-fluid"; }
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+    function allowDrop(ev) {
+        ev.preventDefault();
+    }
+</script>
+<style>
+    .kbc-column {
+        width: 400px;
+        height: 600px;
+        float: left;
+        background-color: silver;
+    }
+    
+    .kbc-item {
+        height: 200px;
+        width: 400px;
+        float: left;
+        background-color: blueviolet;
+        border: 1px solid black;
+    }
+    
+    .item {
+        width: 200px;
+        border: 1px solid black;
+        padding: 10px;
+        margin: 10px;
+    }
+    
+    .list {
+        padding: 20px;
+        border: 1px solid black;
+    }
+</style>
+<div class="list" ondragover="allowDrop(event)">
+    <div class="item" draggable="true">
+        <div class="panel panel-default">
+            <div class="panel-heading">Panel heading without title</div>
+            <div class="panel-body">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Panel heading without title</div>
+                    <div class="panel-body">
+                        COucou 1
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="item" draggable="true">
+        item2
+    </div>
+</div>
+<div class="list" ondragover="allowDrop(event)">
+    <div class="item" draggable="true">
+        item3
+    </div>
+</div>
