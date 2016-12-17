@@ -6,8 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 namespace KbcList.Controllers
 {
- 
-    public class HomeKbcListController : Controller
+    public class BoardKbcListController : Controller
     {
         public IActionResult Index()
         {

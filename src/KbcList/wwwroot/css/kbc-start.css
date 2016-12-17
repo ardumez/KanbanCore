@@ -1,0 +1,26 @@
+.kbc-start.kbc-login
+{
+    font-size: 20px;
+}
+.kbc-start .kbc-start-label
+{
+    font-weight: normal;
+}
+.kbc-start .kbc-start-control
+{
+    font-size: 20px;
+    height: 50px;
+    background: #edeff0;
+}
+.kbc-start .kbc-start-title
+{
+    margin-bottom: 50px;    
+    margin-top: 50px;
+}
+
+.kbc-start .kbc-start-submit
+{
+    margin-bottom: 50px;    
+    margin-top: 50px;
+    font-weight: bold;
+}

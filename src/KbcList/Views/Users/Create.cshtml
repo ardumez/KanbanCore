@@ -1,17 +1,25 @@
-@model CreateUser
-@{
-    Layout = "_Layout";
-}
+@model CreateUser 
+@{ Layout = "_Layout"; }
 
-  <h1>Créer un compte KbcList</h1>
-
-<div asp-validation-summary=" All" class="text-danger"></div>
-<form asp-action="Create" method="post">
-  <div class="form-group"> <label asp-for="Name"></label> <input asp-for="Name" class="form-control" placeholder="ex.,  Odile Deray" /> </div>
-  <div class="form-group"> <label asp-for="Email"></label> <input asp-for="Email" class="form-control" placeholder="ex.,  o.d.i.l.e.@@festival.fr" /> </div>
-  <div class="form-group"> <label asp-for="Password"></label> <input asp-for="Password" class="form-control" placeholder="ex.,  ••••••••••••" /> </div>
-  <button type="submit" class="btn btn-primary btn-lg">Créer un nouveau compte</button> 
-  <br/>
-  <br/>
-  <p class="quiet"> Vous avez déjà un compte&nbsp;? <a asp-action="Login" asp-controller="Users">Connectez-vous</a></p>
-</form>
+<div class="kbc-start kbc-login">
+  <h1 class="kbc-start-title">Créer un compte Kanban Core</h1>
+  <div asp-validation-summary=" All" class="text-danger"></div>
+  <form asp-action="Create" method="post">
+    <div class="form-group">
+      <label asp-for="Name" class="kbc-start-label"></label>
+      <input asp-for="Name" class="form-control kbc-start-control" placeholder="ex.,  Odile Deray" />
+    </div>
+    <div class="form-group">
+      <label asp-for="Email" class="kbc-start-label"></label>
+      <input asp-for="Email" class="form-control kbc-start-control" placeholder="ex.,  o.d.i.l.e.@@festival.fr" />
+    </div>
+    <div class="form-group">
+      <label asp-for="Password" class="kbc-start-label"></label>
+      <input asp-for="Password" class="form-control kbc-start-control" placeholder="ex.,  ••••••••••••" />
+    </div>
+    <button type="submit" class="btn btn-primary btn-lg kbc-start-submit">Créer un nouveau compte</button>
+    <br/>
+    <br/>
+    <p class="quiet"> Vous avez déjà un compte&nbsp;? <a asp-action="Login" asp-controller="Users">Connectez-vous</a></p>
+  </form>
+</div>
