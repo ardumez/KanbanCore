@@ -1,20 +1,21 @@
 @{ ViewData["Title"] = "Coucou"; ViewData["container-type"] = "container-fluid"; }
 <div ng-controller="BoardCtrl as board" ng-init="board.init()">
-    <div board>
-        <div class="kbclist" ng-repeat="boardList in board.boardLists" board-list new-position-fn="board.changePosition(position)">
+    <div>
+        <div class="kbclist" ng-repeat="(indexX,boardList) in board.boardLists" board-list new-position-fn="board.changePosition(position)" board-list-index="indexX">
             <div class="kbc-list-card">
                 <div class="kbc-list-title">
-                    {{ boardList.boardName }}
+                    {{ boardList.boardName }} position: {{indexX}}
                 </div>
                 <div class="kbclist-content">
-                    <div id="panel{{boardItem.boardItemID}}" class="panel panel-default kbc-board-list" ng-repeat="boardItem in boardList.items" board-item
-                        board-item-move="moveItem" board-index="$index">
+                    <div id="panel{{boardItem.boardItemID}}" class="panel panel-default kbc-board-list" ng-repeat="boardItem in boardList.items track by boardItem.boardItemID " board-item
+                        board-item-move="moveItem" board-index="$index" board-index-column="indexX">
                         <div class="panel-body">
-                            {{ boardItem.title }}
+                            {{ boardItem.title }} position: {{$index}}
                         </div>
                     </div>
                 </div>
                 <div class="kbc-add-card">
+                    
                     Ajouter une carte...
                 </div>
             </div>

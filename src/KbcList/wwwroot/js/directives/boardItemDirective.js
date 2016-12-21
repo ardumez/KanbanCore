@@ -12,7 +12,8 @@
             restrict: "EAC",
             scope: {
                 boardItemMove: '=boardItemMove',
-                boardIndex: '&boardIndex'
+                boardIndex: '&boardIndex',
+                boardIndexColumn: '&boardIndexColumn'
             },
             link: function (scope, elem, attrs) {
 
@@ -23,8 +24,8 @@
                     // For create drag info
                     var dragInfo = {
                         idElem: $(boardItemElem).attr("id"),
-                        positionElem: { x: 0, y: scope.boardIndex() },
-                        positionPlaceholder: { x: 0, y: scope.boardIndex() },
+                        positionElem: { x: scope.boardIndexColumn(), y: scope.boardIndex() },
+                        positionPlaceholder: { x: scope.boardIndexColumn(), y: scope.boardIndex() },
                         heightElem: $(boardItemElem).outerHeight()
                     }
                     $rootScope.dragInfo = dragInfo;
@@ -49,35 +50,35 @@
 
                 var waitFor = false;
                 elem.on('mousemove', function (ev) {
-
-                    if (waitFor)
-                        return;
-                    waitFor = true;
-
-                    setTimeout(function () { waitFor = false }, 20);
-
+       
                     if ($rootScope.dragInfo) {
-
+                         $("#" + $rootScope.dragInfo.idElem).css({
+                            top: (ev.originalEvent.pageY + 30) - $(window).scrollTop(),
+                            left: (ev.originalEvent.pageX + 30)
+                        });
                         if ($(elem).attr("id") == $rootScope.dragInfo.idElem)
                             return;
 
                         ev.stopPropagation();
-
+                      
                         var kbcCurrent = $(elem).closest(".kbclist-content").find("#kbcCurrent");
 
-                        $rootScope.dragInfo.positionPlaceholder.y = scope.boardIndex();
-
+                     
+                        $rootScope.dragInfo.positionPlaceholder.x = scope.boardIndexColumn();
                         if (kbcCurrent.length && $(kbcCurrent).prev()
                             && $(kbcCurrent).prev()[0] == boardItemElem) {
                             $("#kbcCurrent").after(boardItemElem);
+                            $rootScope.dragInfo.positionPlaceholder.y = scope.boardIndex();
                         }
                         else if (kbcCurrent.length && $(kbcCurrent).next()
                             && $(kbcCurrent).next()[0] == boardItemElem) {
                             $("#kbcCurrent").before(boardItemElem);
+                                $rootScope.dragInfo.positionPlaceholder.y = scope.boardIndex() + 1;
                         }
                         else {
                             $("#kbcCurrent").remove();
                             $(boardItemElem).before(boardHelpers.getTargetElement($rootScope.dragInfo.heightElem));
+                                $rootScope.dragInfo.positionPlaceholder.y = scope.boardIndex() + 1;
                         }
                     }
                 });

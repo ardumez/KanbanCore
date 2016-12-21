@@ -6,7 +6,7 @@
         .directive('board', BoardDirective);
 
 
-    function BoardDirective($rootScope) {
+    function BoardDirective($rootScope, boardService) {
         return function (scope, elem, attrs) {
 
             // For dragover event on all HTML body
@@ -33,6 +33,9 @@
                 $(boardItemElem).css("width", "auto");
 
                 $("body").removeClass("noselect");
+                console.log($rootScope.dragInfo);
+                $rootScope.changePosition($rootScope.dragInfo);
+
                 $rootScope.dragInfo = null;
             });
         }

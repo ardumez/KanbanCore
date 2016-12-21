@@ -10,7 +10,8 @@
     function BoardListDirective($rootScope, boardHelpers) {
         return {
             scope: {
-                changePosition: '&newPositionFn'
+                changePosition: '&newPositionFn',
+                boardListIndex: '&boardListIndex'
             },
             link: function (scope, elem, attrs) {
                
@@ -21,6 +22,11 @@
                     if (!$rootScope.dragInfo)
                         return;
 
+               /*     $("#" + $rootScope.dragInfo.idElem).css({
+                        top: (ev.originalEvent.pageY + 30) - $(window).scrollTop(),
+                        left: (ev.originalEvent.pageX + 30)
+                    });*/
+                    
                     // When drag over is on the placeholder
                     if (ev.target.id == "kbcCurrent")
                         return;
@@ -34,8 +40,14 @@
                         return;
 
                     $("#kbcCurrent").remove();
-                    $(this).children(".kbc-list-card").children(".kbclist-content")
-                        .append(boardHelpers.getTargetElement($rootScope.dragInfo.heightElem, "kbc-board-list-bottom"));
+
+                    var kbcListContent =  $(this).children(".kbc-list-card").children(".kbclist-content");
+                    var height = $rootScope.dragInfo.heightElem;
+                    var placeholder = boardHelpers.getTargetElement(height, "kbc-board-list-bottom");
+                    kbcListContent.append(placeholder);
+
+                    $rootScope.dragInfo.positionPlaceholder.y = kbcListContent.children().length - 1;
+                    $rootScope.dragInfo.positionPlaceholder.x = scope.boardListIndex();
                 });
             }
         }
