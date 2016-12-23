@@ -38,12 +38,54 @@ body
 .kbclist-content
 {
     padding: 4px;
+    padding-bottom: 0px;
 }
 .kbc-add-card:hover
+{
+
+}
+.kbc-add-card-button
+{
+    padding: 8px 10px;
+    color: rgb(140, 140, 140);
+}
+
+.kbc-add-card-form
+{
+    padding: 4px;
+    padding-top: 0px;
+
+}
+.kbc-add-card-form-panel
+{
+    padding: 4px;
+}
+.kbc-btn-success
+{
+    box-shadow: 0 1px 0 #3F6F21;
+    font-weight: bold;
+    margin-left: 1px;
+}
+.kbc-add-card-form-text
+{
+   
+    resize: none;
+    background-color: #fff;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    display: block;
+    padding: 4px;
+    border: 0px solid white;
+    height: 54px;
+}
+.kbc-add-card-button:hover
 {
     background-color: #CDD2D4;
     border-bottom-left-radius:  3px;
     border-bottom-right-radius : 3px;
+    color: rgb(51, 51, 51);
+
 }
 .kbc-list-card
 {

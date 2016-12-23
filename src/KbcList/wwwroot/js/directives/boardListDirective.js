@@ -14,7 +14,7 @@
                 boardListIndex: '&boardListIndex'
             },
             link: function (scope, elem, attrs) {
-               
+                scope.showAddCard = false;
                 $rootScope.waitEventList = false;
                 elem.bind("mousemove", function (ev) {
 

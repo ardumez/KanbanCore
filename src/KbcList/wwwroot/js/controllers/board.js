@@ -10,6 +10,7 @@
         vm.boardLists = null;
         vm.changePosition = changePosition;
         vm.init = init;
+        vm.addCard = addCard;
 
         $rootScope.changePosition = changePosition;
 
@@ -30,7 +31,7 @@
 
             // For remove old position
             var rem = vm.boardLists[posElem.x].items.splice(posElem.y, 1);
-         
+
             vm.boardLists[posPholder.x].items.splice(posPholder.y, 0, item);
             var items = vm.boardLists[posPholder.x].items;
 
@@ -39,6 +40,10 @@
             $scope.$apply();
             vm.boardLists[posPholder.x].items = items;
             $scope.$apply();
+        }
+
+        function addCard() {
+            
         }
     };
 })(window.angular);

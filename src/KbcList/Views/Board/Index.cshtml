@@ -15,8 +15,17 @@
                     </div>
                 </div>
                 <div class="kbc-add-card">
-                    
-                    Ajouter une carte...
+                    <div class="kbc-add-card-form " ng-show="boardList.showAddCard">
+                        <form ng-submit="board.addCard()">
+                            <div class="panel panel-default kbc-add-card-form-panel">
+                                <textarea class="kbc-add-card-form-text" ng-model="board.newCard" required col="100"></textarea>
+                            </div>
+                            <input class="btn btn-success kbc-btn-success" type="submit" value="Ajouter"  />
+                        </form>
+                    </div>
+                    <div class="kbc-add-card-button" ng-click="boardList.showAddCard=true">
+                        Ajouter une carte...
+                    </div>
                 </div>
             </div>
         </div>
