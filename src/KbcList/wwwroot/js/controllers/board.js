@@ -11,11 +11,23 @@
         vm.changePosition = changePosition;
         vm.init = init;
         vm.addCard = addCard;
-
+        
+        $scope.$on('mousemoveBodyEvent', mousemoveBodyEvent);
         $rootScope.changePosition = changePosition;
 
         return vm;
 
+        function mousemoveBodyEvent(event, data) {
+            if (!$rootScope.dragInfo)
+                return;
+
+            var boardItemElem = document.getElementById($rootScope.dragInfo.idElem);
+
+            $(boardItemElem).css({
+                top: (data.mouseY + 30) - $(window).scrollTop(),
+                left: (data.mouseX + 30)
+            });
+        }
         function init() {
             boardService.getBoard().success(function (data) {
                 vm.boardLists = data;
@@ -43,7 +55,7 @@
         }
 
         function addCard() {
-            
+
         }
     };
 })(window.angular);

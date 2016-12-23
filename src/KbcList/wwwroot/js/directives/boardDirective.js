@@ -5,21 +5,14 @@
         .module('KbcList')
         .directive('board', BoardDirective);
 
-
-    function BoardDirective($rootScope, boardService) {
+    function BoardDirective($rootScope,  boardService) {
         return function (scope, elem, attrs) {
 
             // For dragover event on all HTML body
             elem.bind("mousemove", function (ev) {
-
-                if (!$rootScope.dragInfo)
-                    return;
-
-                var boardItemElem = document.getElementById($rootScope.dragInfo.idElem);
-
-                $(boardItemElem).css({
-                    top: (ev.originalEvent.pageY + 30) - $(window).scrollTop(),
-                    left: (ev.originalEvent.pageX + 30)
+                scope.$broadcast('mousemoveBodyEvent', {
+                    mouseX: ev.originalEvent.pageX, 
+                    mouseY: ev.originalEvent.pageY
                 });
             });
             elem.bind("mouseup", function (ev) {
