@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace KbcList.Models.Database
 {
-    public interface IDataContext
+    public interface IDataContext 
     {
 
         void AddEntity<TEntity>(TEntity entity) where TEntity : class;
