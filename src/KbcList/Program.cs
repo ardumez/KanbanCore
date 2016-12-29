@@ -18,6 +18,8 @@ namespace KbcList
                 .Build();
 
             var host = new WebHostBuilder()
+                .CaptureStartupErrors(true)
+                .UseSetting("detailedErrors","true")
                 .UseConfiguration(config)
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
