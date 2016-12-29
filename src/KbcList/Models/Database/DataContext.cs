@@ -7,4 +7,4 @@ namespace KbcList.Models.Database
     {
 
     }
-}
+} 
