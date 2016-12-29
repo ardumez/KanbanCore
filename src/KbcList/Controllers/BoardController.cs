@@ -1,15 +1,31 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using KbcList.Models.Database;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using System.Linq;
+using KbcList.Models.BoardModels;
+
 namespace KbcList.Controllers
 {
-    public class BoardKbcListController : Controller
+
+    public class BoardController : Controller
+
     {
-        public IActionResult Index()
+        private IDataContext dataContext;
+
+        public BoardController(IDataContext dataContext)
         {
+            this.dataContext = dataContext;
+        }
+
+        public IActionResult Index(int boardID)
+        {
+            Board board = dataContext.Query<Board>().Single(b => b.BoardID == boardID);
+            return View();
+        }
+
+        public IActionResult Index2(int boardID)
+        {
+            Board board = dataContext.Query<Board>().Single(b => b.BoardID == boardID);
             return View();
         }
 
